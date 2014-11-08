@@ -23,7 +23,7 @@ using FFACETools;
 using System;
 using System.Threading;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     public class CombatService
     {
@@ -51,7 +51,7 @@ namespace ZeroLimits.XITools
                 _fface.Navigator.DistanceTolerance = distance;
 
                 // Goto target at max engagement distance.
-                _fface.Navigator.Goto(unit.Position, false);
+                _fface.Navigator.GotoNPC(unit.ID);
 
                 // Restore old tolerance. 
                 _fface.Navigator.DistanceTolerance = old;
@@ -65,6 +65,8 @@ namespace ZeroLimits.XITools
         /// <returns></returns>
         public bool TargetUnit(Unit unit)
         {
+            if (TabToTarget(unit)) return true;
+
             if (unit != null)
             {
                 _fface.Target.SetNPCTarget(unit.ID);
@@ -72,10 +74,23 @@ namespace ZeroLimits.XITools
                 _fface.Navigator.FaceHeading(unit.ID);
             }
 
-            if (_fface.Target.ID != unit.ID) return false;
+            return _fface.Target.ID == unit.ID;
+        }
 
-            return true;
-        }        
+        private bool TabToTarget(Unit unit)
+        {
+            _fface.Navigator.SetViewMode(ViewMode.FirstPerson);
+            _fface.Windower.SendString("/ta <t>");
+
+            int count = 0;
+            while (_fface.Target.ID != unit.ID && count++ < 10)
+            {
+                _fface.Windower.SendKeyPress(KeyCode.TabKey);
+                Thread.Sleep(30);
+            }
+
+            return _fface.Target.ID == unit.ID;
+        }
 
         /// <summary>
         /// Switches the player to attack mode on the current unit

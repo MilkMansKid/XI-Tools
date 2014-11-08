@@ -4,21 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     public class XITools
     {
         /// <summary>
-        /// Singleton instance of the current farming tools.
-        /// </summary>
-        private static XITools _farmingTools;
-
-        /// <summary>
         /// The current fface instance bound to farming tools. 
         /// </summary>
-        private static FFACE _fface;
+        private FFACE _fface;
 
-        private XITools(FFACE fface)
+        public XITools(FFACE fface)
         {
             _fface = fface;
             this.AbilityExecutor = new AbilityExecutor(fface);
@@ -27,33 +22,6 @@ namespace ZeroLimits.XITools
             this.RestingService = new RestingService(fface);
             this.UnitService = new UnitService(fface);
             this.ActionBlocked = new ActionBlocked(fface);
-        }
-
-        /// <summary>
-        /// A single point of access method that returns a FarmingTools object. 
-        /// Make sure you have set an FFACE object before calling this method. 
-        /// </summary>
-        /// <returns></returns>
-        public static XITools GetInstance()
-        {
-            return _farmingTools;
-        }
-
-        /// <summary>
-        /// A single point of access method that returns a FarmingTools object.
-        /// The object returned will be based on the FFACE instance provided or
-        /// if no object was previously created, it will create one for you. 
-        /// </summary>
-        /// <param name="fface"></param>
-        /// <returns></returns>
-        public static XITools GetInstance(FFACE fface)
-        {
-            if (_farmingTools == null || !_fface.Equals(fface))
-            {
-                _farmingTools = new XITools(fface);
-            }
-
-            return _farmingTools;
         }
 
         /// <summary>

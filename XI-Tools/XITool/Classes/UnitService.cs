@@ -22,7 +22,7 @@ using System.Linq;
 using FFACETools;
 using System.Collections.Generic;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     public class UnitService
     {
@@ -44,35 +44,9 @@ namespace ZeroLimits.XITools
             {
                 _unitArray[id] = Unit.CreateUnit(id);
             }
-
-            this.DetectionDistance = 17;
-            this.HeightThreshold = 5;
-            this.TargetMobs = new List<string>();
-            this.IgnoredMobs = new List<string>();
-            this.UnitFilter = DefaultFilter(_fface);
         }
 
         #region Properties
-
-        /// <summary>
-        /// Max height difference a mob can be from the player. 
-        /// </summary>
-        public double HeightThreshold { get; set; }
-
-        /// <summary>
-        /// Max distance a mob will be considered valid.
-        /// </summary>
-        public double DetectionDistance { get; set; }
-
-        /// <summary>
-        /// List of mobs we'd like to kill. 
-        /// </summary>
-        public List<String> TargetMobs { get; set; }
-
-        /// <summary>
-        ///  List of mobs we'd like to ignore. 
-        /// </summary>
-        public List<String> IgnoredMobs { get; set; }
 
         /// <summary>
         /// Used to filter units based on what the user thinks is valid. 
@@ -87,9 +61,9 @@ namespace ZeroLimits.XITools
         {
             get
             {
-                foreach (var Monster in FilteredArray)
+                foreach (var monster in FilteredArray)
                 {
-                    if (Monster.HasAggroed)
+                    if (monster.HasAggroed)
                     {
                         return true;
                     }
@@ -106,9 +80,9 @@ namespace ZeroLimits.XITools
         {
             get
             {
-                foreach (var Monster in FilteredArray)
+                foreach (var monster in FilteredArray)
                 {
-                    if (Monster.IsClaimed)
+                    if (monster.IsClaimed)
                     {
                         return true;
                     }
@@ -120,20 +94,18 @@ namespace ZeroLimits.XITools
         /// <summary>
         /// Returns the list of filter units.
         /// </summary>
-        public Unit[] FilteredArray
+        public ICollection<Unit> FilteredArray
         {
             get
             {
-                return _unitArray
-                    .Where(x => IsValid(x))
-                    .ToArray();
+                return _unitArray.Where(x => IsValid(x)).ToArray();
             }
         }
 
         /// <summary>
         /// Retrieves the list of UNITs
         /// </summary>
-        public Unit[] UnitArray
+        public ICollection<Unit> UnitArray
         {
             get
             {
@@ -144,31 +116,33 @@ namespace ZeroLimits.XITools
         /// <summary>
         /// Retrieves the list of MOBs.
         /// </summary>
-        public Unit[] MOBArray
+        public ICollection<Unit> MOBArray
         {
             get 
             {
-                return UnitArray
-                    .Where(x => x.NPCType.Equals(NPCType.Mob))
-                    .ToArray();
+                return UnitArray.Where(x => x.NPCType.Equals(NPCType.Mob)).ToArray();
             }
         }
 
         /// <summary>
         /// Retrieves the lsit of PCs.
         /// </summary>
-        public Unit[] PCArray
+        public ICollection<Unit> PCArray
         {
             get 
             {
-                return UnitArray
-                    .Where(x => x.NPCType.Equals(NPCType.PC))
-                    .ToArray();
+                return UnitArray.Where(x => x.NPCType.Equals(NPCType.PC)).ToArray();
             }
         }
 
         #endregion
 
+        /// <summary>
+        /// Applies set filter to the unit array and 
+        /// returns matches. 
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
         public bool IsValid(Unit unit)
         {
             return UnitFilter(unit);
@@ -179,7 +153,7 @@ namespace ZeroLimits.XITools
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Unit[] GetUnits(Func<Unit, bool> filter)
+        public ICollection<Unit> GetUnits(Func<Unit, bool> filter)
         {
             return UnitArray.Where(filter).ToArray();
         }
@@ -191,11 +165,16 @@ namespace ZeroLimits.XITools
         /// <param name="filter"></param>
         /// <param name="orderby"></param>
         /// <returns></returns>
-        public Unit[] GetUnits(Func<Unit, bool> filter, Func<Unit, object> orderby)
+        public ICollection<Unit> GetUnits(Func<Unit, bool> filter, Func<Unit, object> orderby)
         {
             return UnitArray.Where(filter).OrderBy(orderby).ToArray();
         }
 
+        /// <summary>
+        /// Returns a single unit matching the filter. 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public Unit GetTarget(Func<Unit, bool> filter)
         {
             return GetUnits(filter).FirstOrDefault();
@@ -214,34 +193,9 @@ namespace ZeroLimits.XITools
         }
 
         // The default mob filter used in filtering the mobs. 
-        public Func<Unit, bool> DefaultFilter(FFACE fface)
+        public virtual Func<Unit, bool> DefaultFilter(FFACE fface)
         {
-            return new Func<Unit, bool>((Unit unit) =>
-            {
-                // If the mob is false... 
-                if (unit == null) return false;
-
-                // Gain performance by only checking mobs that are active
-                if (!unit.IsActive) return false;
-
-                // Mob not in reach height wise. 
-                if (unit.YDifference > HeightThreshold) return false;
-
-                // Allow for mobs with an npc bit of sometimes 4 (colibri) 
-                // and ignore mobs that are invisible npcbit = 0
-                if (unit.NPCBit <= 0 || unit.NPCBit >= 16) return false;
-
-                // If the mob is dead.
-                if (unit.IsDead) return false;
-
-                // Mob not out target.
-                if (!TargetMobs.Contains(unit.Name) && TargetMobs.Count > 0) return false;
-
-                // If the mob is ignored and there are no targets
-                if (IgnoredMobs.Contains(unit.Name)) return false;
-
-                return true;
-            });
+            throw new NotImplementedException("You need to override DefaultFilter with an implementation.");
         }
     }
 }

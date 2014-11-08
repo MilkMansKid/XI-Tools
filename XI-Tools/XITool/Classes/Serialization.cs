@@ -26,12 +26,8 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
-    /// <summary>
-    /// This class is essential the code graveyard. Any code that I would rather not dispose
-    /// of because I found use for it in the past ends up here.
-    /// </summary>
     public static class Serialization
     {
         public static void Serialize<T>(string filename, T value)

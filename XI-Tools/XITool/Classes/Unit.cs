@@ -22,20 +22,21 @@ using System;
 using System.Collections.Generic;
 using System.Timers;
 using System.Linq;
+using ZeroLimits.XITool.Interfaces;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
-    public class Unit
+    public class Unit : IUnit
     {
         #region Members
         public static FFACE Session { get; set; }
         private static FFACE.NPCTools NPCTools;
         private static Unit m = null;
-
+       
         #endregion
 
         #region Constructors
-        Unit(int id = 0)
+        protected Unit(int id = 0)
         {
             // Set the internal id. 
             this.ID = id;
@@ -44,7 +45,7 @@ namespace ZeroLimits.XITools
             if (NPCTools == null && Session != null)
             {
                 NPCTools = Session.NPC;
-            }
+            }            
         }
 
         public static Unit CreateUnit(int id)
@@ -59,7 +60,7 @@ namespace ZeroLimits.XITools
                 return m.MemberwiseClone() as Unit;
             }
         }
-        #endregion
+        #endregion        
 
         #region Player Data
         // Details about a specific unit
@@ -203,7 +204,7 @@ namespace ZeroLimits.XITools
 
         #endregion
 
-        #region Methods
+        #region Methods        
 
         // Make it default to printing units name
         public override string ToString()

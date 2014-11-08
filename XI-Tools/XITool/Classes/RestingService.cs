@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     /// <summary>
     /// Provides methods that allow the player to start resting or stop resting

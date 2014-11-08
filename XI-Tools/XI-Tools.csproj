@@ -7,7 +7,7 @@
     <ProjectGuid>{BE0BF2C6-3DB4-415C-BE21-C3F6B696C335}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZeroLimits.XITools</RootNamespace>
+    <RootNamespace>ZeroLimits</RootNamespace>
     <AssemblyName>XI-Tools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -38,6 +38,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\FFACETools.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,22 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XI-Tools\Ability.cs" />
-    <Compile Include="XI-Tools\Constants.cs" />
+    <Compile Include="XITool\Classes\Ability.cs" />
+    <Compile Include="XITool\Classes\Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XI-Tools\AbilitiesService.cs" />
-    <Compile Include="XI-Tools\AbilityExecutor.cs" />
-    <Compile Include="XI-Tools\AbilityParser.cs" />
-    <Compile Include="XI-Tools\ActionBlocked.cs" />
-    <Compile Include="XI-Tools\CombatService.cs" />
-    <Compile Include="XI-Tools\Unit.cs" />
-    <Compile Include="XI-Tools\XITools.cs" />
-    <Compile Include="XI-Tools\RestingService.cs" />
-    <Compile Include="XI-Tools\UnitService.cs" />
-    <Compile Include="XI-Tools\Serialization.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="XITool\Classes\AbilitiesService.cs" />
+    <Compile Include="XITool\Classes\AbilityExecutor.cs" />
+    <Compile Include="XITool\Classes\AbilityParser.cs" />
+    <Compile Include="XITool\Classes\ActionBlocked.cs" />
+    <Compile Include="XITool\Classes\CombatService.cs" />
+    <Compile Include="XITool\Enums\ActionTypes.cs" />
+    <Compile Include="XITool\Interfaces\IAbilityService.cs" />
+    <Compile Include="XITool\Interfaces\IUnit.cs" />
+    <Compile Include="XITool\Classes\Queues.cs" />
+    <Compile Include="XITool\Classes\Unit.cs" />
+    <Compile Include="XITool\Classes\MovingUnit.cs" />
+    <Compile Include="XITool\Classes\XITools.cs" />
+    <Compile Include="XITool\Classes\RestingService.cs" />
+    <Compile Include="XITool\Classes\UnitService.cs" />
+    <Compile Include="XITool\Classes\Serialization.cs" />
+    <Compile Include="XITool\Test\TestUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FFACE.dll" />

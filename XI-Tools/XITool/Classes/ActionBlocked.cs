@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     /// <summary>
     /// The methods in this class determine whether we can do something based on

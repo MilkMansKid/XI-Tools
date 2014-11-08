@@ -17,7 +17,11 @@ You should have received a copy of the GNU General Public License
 */
 ///////////////////////////////////////////////////////////////////
 
-namespace ZeroLimits.XITools
+using System;
+using System.Collections.Generic;
+using ZeroLimits.XITool.Enums;
+
+namespace ZeroLimits.XITool.Classes
 {
     /// <summary>
     /// An action to be used on a target unit or player.
@@ -40,10 +44,23 @@ namespace ZeroLimits.XITools
         public string Skill { get; set; }
         public string Alias { get; set; }
         public string Postfix { get; set; }
-        public bool IsSpell { get; set;}
-        public bool IsAbility { get; set; }
+        public ActionType ActionType { get; set; }
         public bool IsValidName { get { return !string.IsNullOrEmpty(Name); } }
 
+        /// <summary>
+        /// The distance the move should be used at. 
+        /// </summary>
+        public double Distance { get; set; }
+
+        /// <summary>
+        /// The time it takes to wait in order to cast another spell. 
+        /// </summary>
+        public int GlobalSpellCoolDown { get; set; }
+
+        /// <summary>
+        /// The time to wait in between uses. 
+        /// </summary>
+        public double RangedDelay { get; set; }
 
         /// <summary>
         /// Returns the command to execute the ability or spell

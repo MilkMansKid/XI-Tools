@@ -19,18 +19,26 @@ You should have received a copy of the GNU General Public License
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using ZeroLimits.XITool.Interfaces;
 
-namespace ZeroLimits.XITools
+namespace ZeroLimits.XITool.Classes
 {
     /// <summary>
     /// This class is responsible for retrieving job abilties and spells.
     /// </summary>
-    public class AbilityService : AbilityParser
+    public class AbilityService : AbilityParser, IAbilityService
     {
+        public AbilityService()
+        {
+            this.IsDistanceEnabled = true;
+            this.IsRangedDelayEnabled = true;
+        }
+
         /// <summary>
         /// Creates an ability obj. This object may be a spell
         /// or an ability.
@@ -40,11 +48,8 @@ namespace ZeroLimits.XITools
         public Ability CreateAbility(string name)
         {
             var Abilities = GetAbilitiesWithName(name);
-
-            if (Abilities.Count <= 0)
-                return new Ability();
-            else
-                return Abilities.First();
+            if (Abilities.Count <= 0) return new Ability();
+            return Abilities.First();
         }
 
         /// <summary>
@@ -52,11 +57,9 @@ namespace ZeroLimits.XITools
         /// </summary>
         /// <param name="name">Name of the action</param>
         /// <returns>A list of actions with that name</returns>
-        public List<Ability> GetAbilitiesWithName(String name)
+        public ICollection<Ability> GetAbilitiesWithName(String name)
         {
-            return GetJobAbilitiesByName(name)
-                .Union(GetSpellAbilitiesByName(name))
-                .ToList();
+            return ParseActions(name);
         }
 
         /// <summary>
@@ -65,9 +68,9 @@ namespace ZeroLimits.XITools
         /// <param name="name"></param>
         /// <param name="XMLDoc"></param>
         /// <returns></returns>
-        public List<Ability> GetJobAbilitiesByName(string name)
+        public ICollection<Ability> GetJobAbilitiesByName(string name)
         {
-            return ParseAbilities(name).FindAll(x => x.IsAbility = true);
+            return ParseAbilities(name);
         }
 
         /// <summary>
@@ -77,9 +80,9 @@ namespace ZeroLimits.XITools
         /// <param name="XMLDoc"></param>
         /// <returns></returns>
         /// 
-        public List<Ability> GetSpellAbilitiesByName(string name)
+        public ICollection<Ability> GetSpellAbilitiesByName(string name)
         {
-            return ParseSpells(name).FindAll(x => x.IsSpell = true);
+            return ParseSpells(name);
         }
 
         /// <summary>
