@@ -232,7 +232,7 @@ namespace ZeroLimits.XITool.Classes
                 Thread.Sleep(4000);
             }
 
-            if (ability.Equals(ActionType.Spell))
+            if (ability.ActionType.Equals(ActionType.Spell))
             {
                 Thread.Sleep(spellCastLatency);
 
